@@ -1,7 +1,8 @@
-from flask import Flask
+from flask import Flask, jsonify
 from .extensions import db, migrate, login_manager, cors
 from .config import Config
 from .models import User
+from flask_login import login_required # 로그인 안된사람은 접근 못하게하는 라이브러리
 
 def create_app():
   app = Flask(__name__)
@@ -17,9 +18,23 @@ def create_app():
   @login_manager.user_loader
   def load_user(user_id):
     return User.query.get(user_id)
+  
+# 인증되지 않은 사용자가 로그인을 요청할때 튕겨내는 함수
+  @login_manager.unauthorized_handler
+  def unauthorized():
+    return jsonify({ 'ok' : False, 'message' : '인증되지 않은 사용자'}), 401
+  
+  from .blueprints.auth import bp as auth_bp
+
+  app.register_blueprint(auth_bp, url_prefix='/auth')
 
   @app.route('/check')
   def check():
+    return {'ok' : True}
+
+  @app.route('/check2')
+  @login_required
+  def check2():
     return {'ok' : True}
 
   return app
