@@ -26,10 +26,17 @@ def create_post():
 @bp.get('')
 def post_list():
   posts = db.session.query(Post).order_by(Post.created_at.desc()).all()
-  print(posts)
-  print(type(posts))
 
   return jsonify({
      'ok' : True, 
      'posts' : [ post.to_dict() for post in posts ]
      })
+
+@bp.get('/<post_id>')
+def get_post(post_id):
+  post = db.session.query(Post).get(post_id)
+
+  return jsonify({
+    'ok': True,
+    'post': post.to_dict()
+  })

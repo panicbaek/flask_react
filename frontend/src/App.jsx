@@ -5,6 +5,7 @@ import Singup from './Signup'
 import Login from './Login'
 import { useEffect, useState } from 'react'
 import Write from './Write'
+import Detail from './Detail'
 
 function App() {
 
@@ -52,6 +53,7 @@ function App() {
       <Route path='/signup' element={<Singup/>}></Route>
       <Route path='/login' element={<Login setUserInfo={setUserInfo} />}></Route>
       <Route path='/write' element={<Write/>}></Route>
+      <Route path='/post/:id' element={<Detail/>}></Route>
     </Routes>
 
     </>

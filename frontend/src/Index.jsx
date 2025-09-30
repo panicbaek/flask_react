@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 const Index = () => {
 
   const [posts, setPosts] = useState()
-
+  
   useEffect( () => {
     fetch('http://localhost:5000/post', {
       credentials:'include'
@@ -37,10 +37,10 @@ const Index = () => {
             <tr key={post.id}>
               <td>{post.id}</td>
               <td>
-                <Link to=''>{post.title}</Link>
+                <Link to={`/post/${post.id}`}>{post.title}</Link>
               </td>
               <td>{post.author.nickname}</td>
-              <td>{post.created_at}</td>
+              <td>{new Date(post.created_at).toLocaleDateString('ko-KR')}</td>
             </tr>
           )
         })
