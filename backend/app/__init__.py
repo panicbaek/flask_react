@@ -25,15 +25,16 @@ def create_app():
     return jsonify({ 'ok' : False, 'message' : '인증되지 않은 사용자'}), 401
   
   from .blueprints.auth import bp as auth_bp
+  from .blueprints.post import bp as post_bp
 
   app.register_blueprint(auth_bp, url_prefix='/auth')
+  app.register_blueprint(post_bp, url_prefix='/post')
 
   @app.route('/check')
   def check():
     return {'ok' : True}
 
   @app.route('/check2')
-  @login_required
   def check2():
     return {'ok' : True}
 
