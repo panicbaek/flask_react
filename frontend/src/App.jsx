@@ -6,6 +6,7 @@ import Login from './Login'
 import { useEffect, useState } from 'react'
 import Write from './Write'
 import Detail from './Detail'
+import Edit from './Edit'
 
 function App() {
 
@@ -54,6 +55,7 @@ function App() {
       <Route path='/login' element={<Login setUserInfo={setUserInfo} />}></Route>
       <Route path='/write' element={<Write/>}></Route>
       <Route path='/post/:id' element={<Detail/>}></Route>
+      <Route path='/edit/:id' element={<Edit/>}></Route>
     </Routes>
 
     </>
