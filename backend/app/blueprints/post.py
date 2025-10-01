@@ -40,3 +40,39 @@ def get_post(post_id):
     'ok': True,
     'post': post.to_dict()
   })
+
+@bp.put('/<post_id>')
+@login_required
+def edit_post(post_id):
+  data = request.get_json()
+
+  title = data.get('title')
+  content = data.get('content')
+
+  if not title or not content:
+    return jsonify({'ok':False, 'message' : '제목, 내용을 작성해주세요'}), 400
+
+  post = db.session.query(Post).get(post_id)
+
+  post.title = title
+  post.content = content
+
+  db.session.add(post)
+  db.session.commit()
+
+  return jsonify({
+    'ok':True, 'message' : '게시글 수정 완료'
+  }), 200
+
+@bp.delete('/<post_id>')
+@login_required
+def delete_post(post_id):
+  post = db.session.query(Post).get(post_id)
+
+  if post.author_id != current_user.id:
+    return jsonify({'ok':False, 'message': '권한이 없습니다.'}), 403
+
+  db.session.delete(post)
+  db.session.commit()
+
+  return jsonify({'ok':True, 'message':'삭제 완료'})  
